@@ -1,0 +1,28 @@
+#@data/values
+---
+#! Registry secret
+#@overlay/match missing_ok=True
+secrets:
+  namespace: generic-secrets
+
+#@overlay/match missing_ok=True
+oss:
+  registry_secret_name: registry-credentials-secret
+  registry_secret_type: kubernetes.io/dockerconfigjson
+
+#@overlay/match missing_ok=True
+registry:
+  #@overlay/match missing_ok=True
+  server: https://index.docker.io/v1/
+
+#! Rabbitmq Installation Package Repository
+#@overlay/match missing_ok=True
+#@overlay/match-child-defaults missing_ok=True
+rabbitmq: 
+  #! Rabbitmq Operators
+  systems_namespace: rabbitmq-system #! This cannot be changed as it is used in the rabbitmq package
+  #! Rabbitmq Clusters 
+  cluster_namespace: rabbitmq-clusters #! This has to be the same as the (rabbitmq.cluster_namespace) from rabbitmq.yaml
+  service_type: LoadBalancer
+  persistence_storage_class: <storage_class>
+  persistence_storage: 20Gi
